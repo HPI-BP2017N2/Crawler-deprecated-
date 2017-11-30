@@ -6,15 +6,14 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class SimpleHTMLCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url) {
-        return isInRootDomain(url) && isHTMLPage(url);
+        return isInRootDomain( referringPage, url) && isHTMLPage(url);
     }
 
-    private boolean isHTMLPage(WebURL url) {
-        return false;
-
+    boolean isHTMLPage(WebURL url) {
+        return !url.getURL().matches(".*\\.(jpg|png|js|css|jpeg|txt|epub|fb2|docx|doc|xls|zip|rar|pdf|gif|gz|bin|dmg|iso|csv|log|xml|apk|exe|ttf|bmp|ico|svg|tif|tiff).*");
     }
 
-    private boolean isInRootDomain(WebURL url) {
-        return false;
+    boolean isInRootDomain(Page referringPage, WebURL url) {
+        return referringPage.getWebURL().getDomain().equals(url.getDomain());
     }
 }

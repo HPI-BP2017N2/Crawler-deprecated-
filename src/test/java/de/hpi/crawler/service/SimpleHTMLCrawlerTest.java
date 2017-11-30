@@ -15,50 +15,70 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class SimpleHTMLCrawlerTest {
+
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private SimpleHTMLCrawler crawler;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private Page referringPage;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private WebURL url;
 
     @BeforeEach
-    public void setup(){
+     void setup(){
         setCrawler(new SimpleHTMLCrawler());
         setReferringPage(mock(Page.class));
-        setUrl( mock(WebURL.class));
+        setUrl(mock(WebURL.class));
     }
     @Test
-    public void shouldVisitTest(){
-        crawler.shouldVisit(referringPage, url);
+    void shouldVisitTest(){
+
     }
 
     @Test
-    public void testValidUrl() {
-        testUrl(url, crawler, referringPage,true, "http://www.google.de/");
-        testUrl(url, crawler, referringPage,true, "https://www.google.de/");
-        testUrl(url, crawler, referringPage,true, "http://google.de/afsdfasd");
-        testUrl(url, crawler, referringPage,true, "http://www.calendar.google.de/");
+    void isInRootDomainTest() {
+        WebURL testDomain = new WebURL();
+        testDomain.setURL("http://www.google.de/");
+        when(referringPage.getWebURL()).thenReturn(testDomain);
+
+        testInRootDomainUrl(crawler, referringPage,false, "http://www.googled.de/baleasdfsdf");
+        testInRootDomainUrl(crawler, referringPage,false, "http://google.com/bla");
+        testInRootDomainUrl(crawler, referringPage,false, "http://www.calendar.gooogle.de/");
+        testInRootDomainUrl(crawler, referringPage,false, "google.de");
+
+        testInRootDomainUrl(crawler, referringPage,true, "http://google.de/");
+        testInRootDomainUrl(crawler, referringPage,true, "https://google.de");
+        testInRootDomainUrl(crawler, referringPage,true, "https://google.de/blablaba?asdfs");
+        testInRootDomainUrl(crawler, referringPage,true, "www.google.de");
+
     }
 
     @Test
-    public void testNotHtmlUrl(){
-        testUrl(url, crawler, referringPage,false, "http://www.google.de/test.jpg");
-        testUrl(url, crawler, referringPage,false, "http://www.google.de/123.epub");
-        testUrl(url, crawler, referringPage,false, "http://www.google.de/bla.txt");
-        testUrl(url, crawler, referringPage,false, "http://www.google.de/javascript.js");
-        testUrl(url, crawler, referringPage,false, "http://www.google.de/blub.png?=0");
-        testUrl(url, crawler, referringPage,false, "http://www.google.de/evilIdealo.ai?=abc");
+    void isHTMLPageTest(){
+        testIsHTMLPageUrl(crawler, referringPage,false, "http://www.google.de/test.jpg");
+        testIsHTMLPageUrl(crawler, referringPage,false, "http://www.google.de/blub.png?=0");
+        testIsHTMLPageUrl(crawler, referringPage,false, "http://www.google.de/123.epub");
+        testIsHTMLPageUrl(crawler, referringPage,false, "http://www.google.de/bla.txt");
+        testIsHTMLPageUrl(crawler, referringPage,false, "http://www.google.de/javascript.js");
+        testIsHTMLPageUrl(crawler, referringPage,false, "http://www.google.de/evilIdealo.js?=abc");
+        testIsHTMLPageUrl(crawler, referringPage,false, "http://www.google.de/html.png");
+
+        testIsHTMLPageUrl(crawler, referringPage,true, "http://www.google.de/");
+        testIsHTMLPageUrl(crawler, referringPage,true, "https://www.google.de/");
+        testIsHTMLPageUrl(crawler, referringPage,true, "http://google.de/afsdfasd");
+        testIsHTMLPageUrl(crawler, referringPage,true, "http://www.calendar.google.de/");
+        testIsHTMLPageUrl(crawler, referringPage,true, "http://www.calendar.google.de/");
     }
 
-    @Test
-    public void testNotInRootDomain() {
-        when(referringPage.getWebURL().getDomain()).thenReturn("http://www.google.de/");
-        testUrl(url, crawler, referringPage,false, "http://www.googled.de/baleasdfsdf");
-        testUrl(url, crawler, referringPage,false, "http://google.com/afdasd");
-        testUrl(url, crawler, referringPage,false, "http://www.calendar.gooogle.de/");
+    private void testIsHTMLPageUrl(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
+        WebURL webUrl = new WebURL();
+        webUrl.setURL(url);
+        assertEquals(crawler.isHTMLPage(webUrl), valid);
     }
 
-    private void testUrl(WebURL webUrl, SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
-        when(webUrl.getURL()).thenReturn(url);
-        assertEquals(crawler.shouldVisit(referringPage, webUrl), valid);
+    private void testInRootDomainUrl(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
+        WebURL webUrl = new WebURL();
+        webUrl.setURL(url);
+        assertEquals(crawler.isInRootDomain(referringPage, webUrl), valid);
     }
+
+
+
 
 }
