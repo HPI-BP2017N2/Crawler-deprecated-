@@ -20,11 +20,21 @@ class SimpleHTMLCrawlerTest {
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private Page referringPage;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private WebURL url;
 
+    @Test
+    void saveHTMLContentOfPage() {
+
+
+
+        verify(crawler, times(1)).saveStringToFile("bla","crawledPages/test-123.html");
+
+    }
+
     @BeforeEach
      void setup(){
         setCrawler(new SimpleHTMLCrawler());
         setReferringPage(mock(Page.class));
         setUrl(mock(WebURL.class));
+
 
         WebURL testDomain = new WebURL();
         testDomain.setURL("http://www.google.de/");
