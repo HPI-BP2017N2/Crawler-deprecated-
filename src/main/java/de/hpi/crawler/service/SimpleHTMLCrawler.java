@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class SimpleHTMLCrawler extends WebCrawler {
@@ -40,9 +42,10 @@ public class SimpleHTMLCrawler extends WebCrawler {
         saveStringToFile(contentPage, pathName);
     }
 
-    String convertDomainNameFileFriendly(String domainName){
-        //return regex ^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)
-        return domainName;
+    public String convertDomainNameFileFriendly(String domainName){
+        Pattern pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:[^@\\/\\n]+@)?(?:www\\.)?([^:\\/\\n]+)");
+        Matcher matcher = pattern.matcher(domainName);
+        return matcher.group(1);
     }
     void saveStringToFile(String stringToWrite, String pathName) {
         File file = new File(pathName);

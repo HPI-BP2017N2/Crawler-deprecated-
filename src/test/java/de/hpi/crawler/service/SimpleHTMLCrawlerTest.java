@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleHTMLCrawlerTest {
 
+
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private SimpleHTMLCrawler crawler;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private Page referringPage;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private WebURL url;
@@ -83,6 +84,16 @@ class SimpleHTMLCrawlerTest {
         testUrlIsHTMLPage(crawler, referringPage,true, "http://google.de/afsdfasd");
         testUrlIsHTMLPage(crawler, referringPage,true, "http://www.calendar.google.de/");
         testUrlIsHTMLPage(crawler, referringPage,true, "http://www.calendar.google.de/");
+    }
+
+    @Test
+    void convertDomainNameFileFriendlyTest() {
+        assertEquals("google.de",crawler.convertDomainNameFileFriendly("https://google.de/123/test"));
+        assertEquals("google.in.co",crawler.convertDomainNameFileFriendly("https://www.google.in.co/123/test"));
+        assertEquals("google.com",crawler.convertDomainNameFileFriendly("google.com/123/test"));
+        assertEquals("google.de",crawler.convertDomainNameFileFriendly("www.google.de/1"));
+
+
     }
 
     private void testUrlIsHTMLPage(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
