@@ -8,7 +8,6 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +35,7 @@ public class SimpleHTMLCrawler extends WebCrawler {
     public void saveHTMLContentOfPage(Page page) {
         String contentPage = ((HtmlParseData) page.getParseData()).getHtml();
 
-        String fileName = convertDomainNameFileFriendly(page.getWebURL().getDomain()) +"-"+ new Date().getTime() + ".html";
+        String fileName = convertDomainNameFileFriendly(page.getWebURL().getDomain()) + "-" + Long.toString(System.currentTimeMillis()) + ".html";
         String pathName =  folderName + fileName;
 
         saveStringToFile(contentPage, pathName);
@@ -45,8 +44,10 @@ public class SimpleHTMLCrawler extends WebCrawler {
     public String convertDomainNameFileFriendly(String domainName){
         Pattern pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:[^@\\/\\n]+@)?(?:www\\.)?([^:\\/\\n]+)");
         Matcher matcher = pattern.matcher(domainName);
+        matcher.find();
         return matcher.group(1);
     }
+
     void saveStringToFile(String stringToWrite, String pathName) {
         File file = new File(pathName);
         file.getParentFile().mkdirs();
