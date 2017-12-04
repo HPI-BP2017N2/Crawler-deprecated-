@@ -23,8 +23,6 @@ class SimpleHTMLCrawlerTest {
     @Test
     void saveHTMLContentOfPage() {
 
-
-
         verify(crawler, times(1)).saveStringToFile("bla","crawledPages/test-123.html");
 
     }
@@ -34,11 +32,9 @@ class SimpleHTMLCrawlerTest {
         setCrawler(new SimpleHTMLCrawler());
         setReferringPage(mock(Page.class));
         setUrl(mock(WebURL.class));
-
-
-        WebURL testDomain = new WebURL();
-        testDomain.setURL("http://www.google.de/");
-        when(referringPage.getWebURL()).thenReturn(testDomain);
+        WebURL previousPage = new WebURL();
+        previousPage.setURL("http://www.google.de/");
+        when(referringPage.getWebURL()).thenReturn(previousPage);
     }
     @Test
     void shouldVisitTest(){
@@ -46,13 +42,9 @@ class SimpleHTMLCrawlerTest {
         testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/bla.txt");
         testUrlShouldVisit(crawler, referringPage,false, "http://www.gooOOOOOOgle.dE/123.jpg");
 
-
         testUrlShouldVisit(crawler,referringPage,true, "WWW.GOOGLE.DE");
         testUrlShouldVisit(crawler, referringPage,true, "https://google.de/INDEX");
         testUrlShouldVisit(crawler, referringPage,true, "https://google.de/INDEx.html");
-
-
-
     }
 
     @Test

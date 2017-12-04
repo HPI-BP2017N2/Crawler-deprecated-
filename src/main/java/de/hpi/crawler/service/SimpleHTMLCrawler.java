@@ -40,10 +40,8 @@ public class SimpleHTMLCrawler extends WebCrawler {
         saveStringToFile(contentPage, pathName);
     }
 
-    String convertDomainNameFileFriendly(String domainName){
-        //return regex ^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)
-        return domainName;
-    }
+
+
     void saveStringToFile(String stringToWrite, String pathName) {
         File file = new File(pathName);
         file.getParentFile().mkdirs();
@@ -55,6 +53,11 @@ public class SimpleHTMLCrawler extends WebCrawler {
             e.printStackTrace();
         }
 
+    }
+
+    String convertDomainNameFileFriendly (String domainName){
+        //return regex ^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)
+        return domainName;
     }
 
     boolean isHTMLPage(WebURL url) {
