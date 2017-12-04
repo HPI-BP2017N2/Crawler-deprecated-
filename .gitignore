@@ -90,6 +90,6 @@ fabric.properties
 
 .gitignore
 .idea/
-Crawler.iml
+*.iml
 
 
