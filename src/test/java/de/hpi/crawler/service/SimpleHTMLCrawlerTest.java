@@ -2,6 +2,7 @@ package de.hpi.crawler.service;
 
 
 import edu.uci.ics.crawler4j.crawler.Page;
+import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,10 +13,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-
-//@PrepareForTest({System.class})
-
-//@RunWith(PowerMockRunner.class)
 
 
 class SimpleHTMLCrawlerTest {
@@ -38,12 +35,24 @@ class SimpleHTMLCrawlerTest {
     }
 
     @Test
-    void saveHTMLContentOfPage() {
-        //mockStatic(System.class);
-        //when(System.currentTimeMillis()).thenReturn(123L);
-        crawler.saveStringToFile("bla","crawledPages/google_de-1223423.html");
-        verify(crawler, times(1)).saveStringToFile(anyString(),matches("crawledPages\\/google_de-[0-9]*\\.html"));
+    void saveHTMLContentOfPageTest() {
+        crawler.saveHTMLContentOfPage(constructTestPage("http://www.google.de/", "bla"));
+        verify(crawler, times(1)).saveStringToFile(eq("bla"),matches("crawledPages\\/google_de-[0-9]*\\.html"));
 
+        crawler.saveHTMLContentOfPage(constructTestPage("https://www.google.in.co/123/test", "blub"));
+        verify(crawler, times(1)).saveStringToFile(eq("blub"),matches("crawledPages\\/google_in_co-[0-9]*\\.html"));
+
+
+    }
+
+    private Page constructTestPage(String url, String html) {
+        WebURL urlOfPageToStore = new WebURL();
+        urlOfPageToStore.setURL(url);
+        Page pageToStore = new Page(urlOfPageToStore);
+        HtmlParseData testParseData = new HtmlParseData();
+        testParseData.setHtml(html);
+        pageToStore.setParseData(testParseData);
+        return pageToStore;
     }
 
     @Test
