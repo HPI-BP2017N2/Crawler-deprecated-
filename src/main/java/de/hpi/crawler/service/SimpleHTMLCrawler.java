@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 
 public class SimpleHTMLCrawler extends WebCrawler {
-    String folderName = "crawledPages/";
+    private String folderName = "crawledPages/";
 
 
     @Override
@@ -32,7 +32,7 @@ public class SimpleHTMLCrawler extends WebCrawler {
         }
     }
 
-    public void saveHTMLContentOfPage(Page page) {
+    void saveHTMLContentOfPage(Page page) {
         String contentPage = ((HtmlParseData) page.getParseData()).getHtml();
 
         String fileName = convertDomainNameFileFriendly(page.getWebURL().getDomain()) + "-" + Long.toString(System.currentTimeMillis()) + ".html";
@@ -42,15 +42,20 @@ public class SimpleHTMLCrawler extends WebCrawler {
     }
 
     public String convertDomainNameFileFriendly(String domainName){
-        Pattern pattern = Pattern.compile("^(?:https?:\\/\\/)?(?:[^@\\/\\n]+@)?(?:www\\.)?([^:\\/\\n]+)");
+        Pattern pattern = Pattern.compile("^(?:https?://)?(?:[^@/\\n]+@)?(?:www\\.)?([^:/\\n]+)");
         Matcher matcher = pattern.matcher(domainName);
-        matcher.find();
-        return matcher.group(1);
+        if (matcher.find())
+        {
+            return matcher.group(1).replaceAll("\\.","_");
+        }
+        else
+            return "";
     }
 
-    void saveStringToFile(String stringToWrite, String pathName) {
+    public void saveStringToFile(String stringToWrite, String pathName) {
         File file = new File(pathName);
         file.getParentFile().mkdirs();
+
 
         try(  PrintWriter out = new PrintWriter( pathName )  ){
             out.println( stringToWrite);

@@ -10,8 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 //@PrepareForTest({System.class})
@@ -30,7 +29,7 @@ class SimpleHTMLCrawlerTest {
 
     @BeforeEach
     void setup(){
-        setCrawler(new SimpleHTMLCrawler());
+        setCrawler(spy(new SimpleHTMLCrawler()));
         setReferringPage(mock(Page.class));
         setUrl(mock(WebURL.class));
         WebURL previousPage = new WebURL();
@@ -42,7 +41,8 @@ class SimpleHTMLCrawlerTest {
     void saveHTMLContentOfPage() {
         //mockStatic(System.class);
         //when(System.currentTimeMillis()).thenReturn(123L);
-        //verify(crawler, times(1)).saveStringToFile("bla","crawledPages/test-123.html");
+        crawler.saveStringToFile("bla","crawledPages/google_de-1223423.html");
+        verify(crawler, times(1)).saveStringToFile(anyString(),matches("crawledPages\\/google_de-[0-9]*\\.html"));
 
     }
 
@@ -89,10 +89,10 @@ class SimpleHTMLCrawlerTest {
 
     @Test
     void convertDomainNameFileFriendlyTest() {
-        assertEquals("google.de",crawler.convertDomainNameFileFriendly("https://google.de/123/test"));
-        assertEquals("google.in.co",crawler.convertDomainNameFileFriendly("https://www.google.in.co/123/test"));
-        assertEquals("google.com",crawler.convertDomainNameFileFriendly("google.com/123/test"));
-        assertEquals("google.de",crawler.convertDomainNameFileFriendly("www.google.de/1"));
+        assertEquals("google_de",crawler.convertDomainNameFileFriendly("https://google.de/123/test"));
+        assertEquals("google_in_co",crawler.convertDomainNameFileFriendly("https://www.google.in.co/123/test"));
+        assertEquals("google_com",crawler.convertDomainNameFileFriendly("google.com/123/test"));
+        assertEquals("google_de",crawler.convertDomainNameFileFriendly("www.google.de/1"));
 
 
     }
