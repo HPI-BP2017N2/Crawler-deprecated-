@@ -42,14 +42,13 @@ class SimpleHTMLCrawlerTest {
     void saveHTMLContentOfPage() {
         //mockStatic(System.class);
         //when(System.currentTimeMillis()).thenReturn(123L);
-        assertEquals(true,true);
         //verify(crawler, times(1)).saveStringToFile("bla","crawledPages/test-123.html");
 
     }
 
     @Test
     void shouldVisitTest(){
-        testUrlShouldVisit(crawler,referringPage,false, "http://www.googled.de/baleasdfsdf");
+        testUrlShouldVisit(crawler,referringPage, false, "http://www.googled.de/baleasdfsdf");
         testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/bla.txt");
         testUrlShouldVisit(crawler, referringPage,false, "http://www.gooOOOOOOgle.dE/123.jpg");
 
@@ -101,19 +100,19 @@ class SimpleHTMLCrawlerTest {
     private void testUrlIsHTMLPage(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
         WebURL webUrl = new WebURL();
         webUrl.setURL(url);
-        assertEquals(crawler.isHTMLPage(webUrl), valid);
+        assertEquals(valid, crawler.isHTMLPage(webUrl));
     }
 
     private void testUrlIsInRootDomain(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
         WebURL webUrl = new WebURL();
         webUrl.setURL(url);
-        assertEquals(crawler.isInRootDomain(referringPage, webUrl), valid);
+        assertEquals(valid, crawler.isInRootDomain(referringPage, webUrl));
     }
 
     private void testUrlShouldVisit(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url) {
         WebURL webUrl = new WebURL();
         webUrl.setURL(url);
-        assertEquals(crawler.shouldVisit(referringPage, webUrl), valid);
+        assertEquals(valid, crawler.shouldVisit(referringPage, webUrl) );
     }
 
 
