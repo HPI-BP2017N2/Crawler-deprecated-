@@ -8,19 +8,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 
-@PrepareForTest({System.class})
+//@PrepareForTest({System.class})
 
-@RunWith(PowerMockRunner.class)
+//@RunWith(PowerMockRunner.class)
 
 
 class SimpleHTMLCrawlerTest {
@@ -44,8 +40,8 @@ class SimpleHTMLCrawlerTest {
 
     @Test
     void saveHTMLContentOfPage() {
-        mockStatic(System.class);
-        when(System.currentTimeMillis()).thenReturn(123L);
+        //mockStatic(System.class);
+        //when(System.currentTimeMillis()).thenReturn(123L);
         assertEquals(true,true);
         //verify(crawler, times(1)).saveStringToFile("bla","crawledPages/test-123.html");
 
