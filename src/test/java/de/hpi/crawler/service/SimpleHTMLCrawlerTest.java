@@ -98,10 +98,10 @@ class SimpleHTMLCrawlerTest {
 
     @Test
     void convertDomainNameFileFriendlyTest() {
-        assertEquals("google_de",crawler.convertDomainNameFileFriendly("https://google.de/123/test"));
-        assertEquals("google_in_co",crawler.convertDomainNameFileFriendly("https://www.google.in.co/123/test"));
-        assertEquals("google_com",crawler.convertDomainNameFileFriendly("google.com/123/test"));
-        assertEquals("google_de",crawler.convertDomainNameFileFriendly("www.google.de/1"));
+        assertEquals("google_de",crawler.getDomainFileFriendly("https://google.de/123/test"));
+        assertEquals("google_in_co",crawler.getDomainFileFriendly("https://www.google.in.co/123/test"));
+        assertEquals("google_com",crawler.getDomainFileFriendly("google.com/123/test"));
+        assertEquals("google_de",crawler.getDomainFileFriendly("www.google.de/1"));
 
 
     }
@@ -109,7 +109,7 @@ class SimpleHTMLCrawlerTest {
     private void testUrlIsHTMLPage(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
         WebURL webUrl = new WebURL();
         webUrl.setURL(url);
-        assertEquals(valid, crawler.isHTMLPage(webUrl));
+        assertEquals(valid, crawler.isMIMEfiltered(webUrl));
     }
 
     private void testUrlIsInRootDomain(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){

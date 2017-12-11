@@ -22,7 +22,7 @@ public class SimpleHTMLCrawler extends WebCrawler {
         WebURL referringPageURL = referringPage.getWebURL();
         referringPageURL.setURL(referringPageURL.getURL().toLowerCase());
         referringPage.setWebURL(referringPageURL);
-        return isInRootDomain( referringPage, url) && isHTMLPage(url);
+        return isInRootDomain( referringPage, url) && isMIMEfiltered(url);
     }
 
     @Override
@@ -35,15 +35,15 @@ public class SimpleHTMLCrawler extends WebCrawler {
     void saveHTMLContentOfPage(Page page) {
         String contentPage = ((HtmlParseData) page.getParseData()).getHtml();
 
-        String fileName = convertDomainNameFileFriendly(page.getWebURL().getDomain()) + "-" + Long.toString(System.currentTimeMillis()) + ".html";
+        String fileName = getDomainFileFriendly(page.getWebURL().getURL()) + "-" + Long.toString(System.currentTimeMillis()) + ".html";
         String pathName =  folderName + fileName;
 
         saveStringToFile(contentPage, pathName);
     }
 
-    public String convertDomainNameFileFriendly(String domainName){
+    public String getDomainFileFriendly(String url){
         Pattern pattern = Pattern.compile("^(?:https?://)?(?:[^@/\\n]+@)?(?:www\\.)?([^:/\\n]+)");
-        Matcher matcher = pattern.matcher(domainName);
+        Matcher matcher = pattern.matcher(url);
         if (matcher.find())
         {
             return matcher.group(1).replaceAll("\\.","_");
@@ -66,7 +66,7 @@ public class SimpleHTMLCrawler extends WebCrawler {
 
     }
 
-    boolean isHTMLPage(WebURL url) {
+    boolean isMIMEfiltered(WebURL url) {
         return !url.getURL().matches(".*\\.(jpg|png|js|css|jpeg|txt|epub|fb2|docx|doc|xls|zip|rar|pdf|gif|gz|bin|dmg|iso|csv|log|xml|apk|exe|ttf|bmp|ico|svg|tif|tiff).*");
     }
 
