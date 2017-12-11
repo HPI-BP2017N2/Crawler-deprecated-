@@ -26,7 +26,7 @@ class SimpleHTMLCrawlerTest {
 
     @BeforeEach
     void setup(){
-        setCrawler(spy(new SimpleHTMLCrawler()));
+        setCrawler(spy(new SimpleHTMLCrawler(new FileSaver())));
         setReferringPage(mock(Page.class));
         setUrl(mock(WebURL.class));
         WebURL previousPage = new WebURL();
@@ -34,16 +34,6 @@ class SimpleHTMLCrawlerTest {
         when(referringPage.getWebURL()).thenReturn(previousPage);
     }
 
-    @Test
-    void saveHTMLContentOfPageTest() {
-        crawler.saveHTMLContentOfPage(constructTestPage("http://www.google.de/", "bla"));
-        verify(crawler, times(1)).saveStringToFile(eq("bla"),matches("crawledPages\\/google_de-[0-9]*\\.html"));
-
-        crawler.saveHTMLContentOfPage(constructTestPage("https://www.google.in.co/123/test", "blub"));
-        verify(crawler, times(1)).saveStringToFile(eq("blub"),matches("crawledPages\\/google_in_co-[0-9]*\\.html"));
-
-
-    }
 
     private Page constructTestPage(String url, String html) {
         WebURL urlOfPageToStore = new WebURL();
