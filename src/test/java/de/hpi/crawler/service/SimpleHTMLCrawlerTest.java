@@ -35,6 +35,48 @@ class SimpleHTMLCrawlerTest {
     }
 
 
+    @Test
+    void shouldVisitTest(){
+        isInRootDomainTest();
+        isHTMLPageTest();
+    }
+
+    private void isInRootDomainTest() {
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.googled.de/INDEX.html");
+        testUrlShouldVisit(crawler, referringPage,false, "http://GOOGLE.com/bla");
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.calendar.gooogle.de/");
+        testUrlShouldVisit(crawler, referringPage,false, "google.de");
+
+        testUrlShouldVisit(crawler, referringPage,true, "http://google.de/INDEX");
+        testUrlShouldVisit(crawler, referringPage,true, "https://GOOGLE.de");
+        testUrlShouldVisit(crawler, referringPage,true, "https://google.de/blablaba?asdfs");
+        testUrlShouldVisit(crawler, referringPage,true, "www.google.de");
+
+    }
+
+    private void isHTMLPageTest(){
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/test.jpg");
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/blub.png?=0");
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.goog000le.de/123.epub");
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/bla.txt");
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/javascript.js");
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/evilIdealo.js?=abc");
+        testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/html.png");
+
+        testUrlShouldVisit(crawler, referringPage,true, "http://www.google.de/");
+        testUrlShouldVisit(crawler, referringPage,true, "https://www.google.de/");
+        testUrlShouldVisit(crawler, referringPage,true, "http://google.de/afsdfasd");
+        testUrlShouldVisit(crawler, referringPage,true, "http://www.calendar.google.de/");
+        testUrlShouldVisit(crawler, referringPage,true, "http://www.calendar.google.de/");
+    }
+
+    private void testUrlShouldVisit(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url) {
+        WebURL webUrl = new WebURL();
+        webUrl.setURL(url);
+        assertEquals(valid, crawler.shouldVisit(referringPage, webUrl) );
+    }
+
+
     private Page constructTestPage(String url, String html) {
         WebURL urlOfPageToStore = new WebURL();
         urlOfPageToStore.setURL(url);
@@ -45,66 +87,9 @@ class SimpleHTMLCrawlerTest {
         return pageToStore;
     }
 
-    @Test
-    void shouldVisitTest(){
-        testUrlShouldVisit(crawler,referringPage, false, "http://www.googled.de/baleasdfsdf");
-        testUrlShouldVisit(crawler, referringPage,false, "http://www.google.de/bla.txt");
-        testUrlShouldVisit(crawler, referringPage,false, "http://www.gooOOOOOOgle.dE/123.jpg");
-
-        testUrlShouldVisit(crawler,referringPage,true, "WWW.GOOGLE.DE");
-        testUrlShouldVisit(crawler, referringPage,true, "https://google.de/INDEX");
-        testUrlShouldVisit(crawler, referringPage,true, "https://google.de/INDEx.html");
-    }
-
-    @Test
-    void isInRootDomainTest() {
-        testUrlIsInRootDomain(crawler, referringPage,false, "http://www.googled.de/baleasdfsdf");
-        testUrlIsInRootDomain(crawler, referringPage,false, "http://google.com/bla");
-        testUrlIsInRootDomain(crawler, referringPage,false, "http://www.calendar.gooogle.de/");
-        testUrlIsInRootDomain(crawler, referringPage,false, "google.de");
-        testUrlIsInRootDomain(crawler, referringPage,true, "http://google.de/");
-        testUrlIsInRootDomain(crawler, referringPage,true, "https://google.de");
-        testUrlIsInRootDomain(crawler, referringPage,true, "https://google.de/blablaba?asdfs");
-        testUrlIsInRootDomain(crawler, referringPage,true, "www.google.de");
-
-    }
-
-    @Test
-    void isHTMLPageTest(){
-        testUrlIsHTMLPage(crawler, referringPage,false, "http://www.google.de/test.jpg");
-        testUrlIsHTMLPage(crawler, referringPage,false, "http://www.google.de/blub.png?=0");
-        testUrlIsHTMLPage(crawler, referringPage,false, "http://www.google.de/123.epub");
-        testUrlIsHTMLPage(crawler, referringPage,false, "http://www.google.de/bla.txt");
-        testUrlIsHTMLPage(crawler, referringPage,false, "http://www.google.de/javascript.js");
-        testUrlIsHTMLPage(crawler, referringPage,false, "http://www.google.de/evilIdealo.js?=abc");
-        testUrlIsHTMLPage(crawler, referringPage,false, "http://www.google.de/html.png");
-
-        testUrlIsHTMLPage(crawler, referringPage,true, "http://www.google.de/");
-        testUrlIsHTMLPage(crawler, referringPage,true, "https://www.google.de/");
-        testUrlIsHTMLPage(crawler, referringPage,true, "http://google.de/afsdfasd");
-        testUrlIsHTMLPage(crawler, referringPage,true, "http://www.calendar.google.de/");
-        testUrlIsHTMLPage(crawler, referringPage,true, "http://www.calendar.google.de/");
-    }
 
 
 
-    private void testUrlIsHTMLPage(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
-        WebURL webUrl = new WebURL();
-        webUrl.setURL(url);
-        assertEquals(valid, crawler.isMIMEfiltered(webUrl));
-    }
-
-    private void testUrlIsInRootDomain(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
-        WebURL webUrl = new WebURL();
-        webUrl.setURL(url);
-        assertEquals(valid, crawler.isInRootDomain(referringPage, webUrl));
-    }
-
-    private void testUrlShouldVisit(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url) {
-        WebURL webUrl = new WebURL();
-        webUrl.setURL(url);
-        assertEquals(valid, crawler.shouldVisit(referringPage, webUrl) );
-    }
 
 
 
