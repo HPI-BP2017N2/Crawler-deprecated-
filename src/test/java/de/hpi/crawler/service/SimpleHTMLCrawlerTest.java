@@ -22,11 +22,16 @@ class SimpleHTMLCrawlerTest {
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private Page referringPage;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private WebURL url;
 
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) StorageProvider fileSaver;
+
+
 
 
     @BeforeEach
     void setup(){
-        setCrawler(spy(new SimpleHTMLCrawler(new FileSaver())));
+        setFileSaver(spy(new FileSaver()));
+
+        setCrawler(spy(new SimpleHTMLCrawler(fileSaver)));
         setReferringPage(mock(Page.class));
         setUrl(mock(WebURL.class));
         WebURL previousPage = new WebURL();
@@ -34,9 +39,33 @@ class SimpleHTMLCrawlerTest {
         when(referringPage.getWebURL()).thenReturn(previousPage);
     }
 
+    @Test
+    void visit() {
+        Page validPage = constructTestPage("http://www.google.de/", "<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "<title>Page Title</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "\n" +
+                "<h1>My First Heading</h1>\n" +
+                "<p>My first paragraph.</p>\n" +
+                "\n" +
+                "</body>\n" +
+                "</html>");
+        getCrawler().visit(validPage);
+
+        verify(getFileSaver(), times(1)).storePage(validPage);
+
+        Page inValidPage = constructTestPage("http://www.google.de/", "bla");
+        getCrawler().visit(inValidPage);
+
+        verify(getFileSaver(), never()).storePage(inValidPage);
+
+    }
 
     @Test
-    void shouldVisitTest(){
+    void shouldVisit(){
         isInRootDomainTest();
         isHTMLPageTest();
     }
@@ -80,15 +109,12 @@ class SimpleHTMLCrawlerTest {
     private Page constructTestPage(String url, String html) {
         WebURL urlOfPageToStore = new WebURL();
         urlOfPageToStore.setURL(url);
-        Page pageToStore = new Page(urlOfPageToStore);
+        Page pageToStore = spy(new Page(urlOfPageToStore));
         HtmlParseData testParseData = new HtmlParseData();
         testParseData.setHtml(html);
         pageToStore.setParseData(testParseData);
         return pageToStore;
     }
-
-
-
 
 
 

@@ -22,7 +22,7 @@ public class FileSaverTest {
 
 
     @Test
-    public void storePageTest() {
+    public void storePage() {
         setFileSaver(spy(new FileSaver()));
 
         savedPage("bla","http://www.google.de/", "google_de", true );
