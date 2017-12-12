@@ -1,5 +1,6 @@
 package de.hpi.crawler.service;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import lombok.AccessLevel;
@@ -36,7 +37,7 @@ public class FileSaver implements StorageProvider {
             return "";
     }
 
-    private void saveStringToFile(String stringToWrite, String pathName) {
+    @VisibleForTesting void saveStringToFile(String stringToWrite, String pathName) {
         File file = new File(pathName);
         file.getParentFile().mkdirs();
 

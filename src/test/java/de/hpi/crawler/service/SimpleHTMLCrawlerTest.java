@@ -86,15 +86,7 @@ class SimpleHTMLCrawlerTest {
         testUrlIsHTMLPage(crawler, referringPage,true, "http://www.calendar.google.de/");
     }
 
-    @Test
-    void convertDomainNameFileFriendlyTest() {
-        assertEquals("google_de",crawler.getDomainFileFriendly("https://google.de/123/test"));
-        assertEquals("google_in_co",crawler.getDomainFileFriendly("https://www.google.in.co/123/test"));
-        assertEquals("google_com",crawler.getDomainFileFriendly("google.com/123/test"));
-        assertEquals("google_de",crawler.getDomainFileFriendly("www.google.de/1"));
 
-
-    }
 
     private void testUrlIsHTMLPage(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url){
         WebURL webUrl = new WebURL();
