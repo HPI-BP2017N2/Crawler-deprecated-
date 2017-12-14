@@ -31,7 +31,7 @@ class SimpleWebCrawlerTest {
     void setup(){
         setFileSaver(spy(new FileStorage()));
 
-        setCrawler(spy(new SimpleWebCrawler(fileSaver)));
+        setCrawler(spy(new SimpleWebCrawler(getFileSaver())));
         setReferringPage(mock(Page.class));
         setUrl(mock(WebURL.class));
         WebURL previousPage = new WebURL();
@@ -115,8 +115,9 @@ class SimpleWebCrawlerTest {
         WebURL urlOfPageToStore = new WebURL();
         urlOfPageToStore.setURL(url);
         Page pageToStore = spy(new Page(urlOfPageToStore));
-        HtmlParseData testParseData = new HtmlParseData();
+        HtmlParseData testParseData = spy(new HtmlParseData());
         testParseData.setHtml(html);
+        testParseData.setText("");
         pageToStore.setParseData(testParseData);
         return pageToStore;
     }

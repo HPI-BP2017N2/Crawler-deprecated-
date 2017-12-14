@@ -51,7 +51,7 @@ public class SimpleWebCrawler extends WebCrawler {
 
             getLogger().debug("Text length: {}", text.length());
             getLogger().debug("Html length: {}", html.length());
-            getLogger().debug("Number of outgoing links: {}", links.size());
+            //getLogger().debug("Number of outgoing links: {}", links.size());
 
             try {
                 storageProvider.store(page);
