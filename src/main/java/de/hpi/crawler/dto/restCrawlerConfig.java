@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class CrawlerConfig {
+public class restCrawlerConfig {
 
     @Getter private List<String> urls;
 
