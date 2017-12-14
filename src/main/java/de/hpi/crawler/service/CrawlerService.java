@@ -27,13 +27,14 @@ public class CrawlerService {
     @Getter(AccessLevel.PRIVATE) private final String TMP_FILES_DIR = "./tmp",
             USER_AGENT = "Mozilla/5.0 (compatible; HPI-BPN2-2017/2.1; https://hpi.de/naumann/teaching/bachelorprojekte/inventory-management.html)";
 
-
+    
 
     public void crawlDomain(String domainUrl) {
         try {
             CrawlController controller = createDefaultCrawlController(domainUrl);
             controller.addSeed(domainUrl);
-            controller.startNonBlocking(new StorageCrawlerFactory.FileStorage(),1);
+            StorageCrawlerFactory factory = new StorageCrawlerFactory.FileStorage();
+            controller.startNonBlocking(factory,1);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -26,8 +26,6 @@ public class CrawlerController{
     public void startCrawling(@RequestBody restCrawlerConfig restCrawlerConfig) {
         getCrawlerService().crawlDomain(restCrawlerConfig.getUrl());
     }
-
-
 }
 
 
