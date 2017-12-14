@@ -19,20 +19,14 @@ public class CrawlerController {
 
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private CrawlerService crawlerService;
 
-
     @Autowired
     public CrawlerController(CrawlerService crawlerService) {
         setCrawlerService(crawlerService);
     }
 
-
     @RequestMapping(value = "/crawler/start", method = RequestMethod.POST)
     public void startCrawling(@RequestBody restCrawlerConfig restCrawlerConfig) {
-
-        for (String url : restCrawlerConfig.getUrls()) {
-            getCrawlerService().crawlPage(url);
-        }
-
+        getCrawlerService().crawlPage(restCrawlerConfig.getDomainUrl());
     }
 
 
