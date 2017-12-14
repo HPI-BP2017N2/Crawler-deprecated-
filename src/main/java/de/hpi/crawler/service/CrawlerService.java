@@ -29,11 +29,11 @@ public class CrawlerService {
 
 
 
-    public void crawlPage(String domainUrl) {
+    public void crawlDomain(String domainUrl) {
         try {
             CrawlController controller = createDefaultCrawlController(domainUrl);
             controller.addSeed(domainUrl);
-            controller.startNonBlocking(SimpleHTMLCrawler.class,1);
+            controller.startNonBlocking(new StorageCrawlerFactory.FileStorage(),1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +57,6 @@ public class CrawlerService {
         config.setUserAgentString(getUSER_AGENT());
         return config;
     }
-
     private RobotstxtServer createDefaultRobotsTxtServer(PageFetcher fetcher, String rootUrl){
         RobotstxtConfig robotsTxtConfig = new RobotstxtConfig();
         try {
@@ -67,7 +66,6 @@ public class CrawlerService {
         }
         return new RobotstxtServer(robotsTxtConfig, fetcher);
     }
-
     private boolean isRobotsTxtExisting(PageFetcher fetcher, URL url) {
         WebURL robotsTxtUrl = new WebURL();
         String host = url.getHost().toLowerCase();

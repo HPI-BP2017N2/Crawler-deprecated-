@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class CrawlerController {
-
-
+public class CrawlerController{
 
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private CrawlerService crawlerService;
 
@@ -26,9 +24,8 @@ public class CrawlerController {
 
     @RequestMapping(value = "/crawler/start", method = RequestMethod.POST)
     public void startCrawling(@RequestBody restCrawlerConfig restCrawlerConfig) {
-        getCrawlerService().crawlPage(restCrawlerConfig.getUrl());
+        getCrawlerService().crawlDomain(restCrawlerConfig.getUrl());
     }
-
 
 
 }

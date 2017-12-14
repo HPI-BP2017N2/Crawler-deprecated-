@@ -8,17 +8,24 @@ import lombok.Getter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FileSaver implements StorageProvider {
+public class FileStorage implements StorageProvider {
 
     //constants
-    @Getter(AccessLevel.PRIVATE) private static final String folderName = "crawledPages/";
+    @Getter(AccessLevel.PRIVATE) private String folderName = "crawledPages/";
+
+    public FileStorage (String aFolderName) {
+        folderName = aFolderName;
+    }
+
+    public FileStorage(){}
 
     @Override
-    public void storePage(Page page) {
+    public void store(Page page) throws IOException {
         String contentPage = ((HtmlParseData) page.getParseData()).getHtml();
         String fileName = getDomainFileFriendly(page.getWebURL().getURL()) + "-" + Long.toString(System.currentTimeMillis()) + ".html";
         String pathName =  folderName + fileName;
@@ -37,9 +44,13 @@ public class FileSaver implements StorageProvider {
             return "";
     }
 
-    @VisibleForTesting void saveStringToFile(String stringToWrite, String pathName) {
+    @VisibleForTesting void saveStringToFile(String stringToWrite, String pathName) throws IOException {
         File file = new File(pathName);
-        file.getParentFile().mkdirs();
+        File folder = file.getParentFile();
+
+        if(!folder.exists() && !folder.mkdirs()){
+            throw new IOException("Couldn't create the storage folder: " + folder.getAbsolutePath() + " does it already exist ?");
+        }
 
         try(  PrintWriter out = new PrintWriter( pathName )  ){
             out.println( stringToWrite);

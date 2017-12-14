@@ -15,10 +15,10 @@ import static org.mockito.Mockito.*;
 
 
 
-class SimpleHTMLCrawlerTest {
+class SimpleWebCrawlerTest {
 
 
-    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private SimpleHTMLCrawler crawler;
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private SimpleWebCrawler crawler;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private Page referringPage;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private WebURL url;
 
@@ -29,9 +29,9 @@ class SimpleHTMLCrawlerTest {
 
     @BeforeEach
     void setup(){
-        setFileSaver(spy(new FileSaver()));
+        setFileSaver(spy(new FileStorage()));
 
-        setCrawler(spy(new SimpleHTMLCrawler(fileSaver)));
+        setCrawler(spy(new SimpleWebCrawler(fileSaver)));
         setReferringPage(mock(Page.class));
         setUrl(mock(WebURL.class));
         WebURL previousPage = new WebURL();
@@ -55,13 +55,17 @@ class SimpleHTMLCrawlerTest {
                 "</html>");
         getCrawler().visit(validPage);
 
-        verify(getFileSaver(), times(1)).storePage(validPage);
+        try {
+            verify(getFileSaver(), times(1)).store(validPage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Page inValidPage = constructTestPage("http://www.google.de/", "bla");
         getCrawler().visit(inValidPage);
 
         //TODO check what non HTML content is
-        //verify(getFileSaver(), never()).storePage(inValidPage);
+        //verify(getFileSaver(), never()).store(inValidPage);
 
     }
 
@@ -100,7 +104,7 @@ class SimpleHTMLCrawlerTest {
         testUrlShouldVisit(crawler, referringPage,true, "http://www.calendar.google.de/");
     }
 
-    private void testUrlShouldVisit(SimpleHTMLCrawler crawler, Page referringPage, boolean valid, String url) {
+    private void testUrlShouldVisit(SimpleWebCrawler crawler, Page referringPage, boolean valid, String url) {
         WebURL webUrl = new WebURL();
         webUrl.setURL(url);
         assertEquals(valid, crawler.shouldVisit(referringPage, webUrl) );

@@ -10,20 +10,24 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.mockito.verification.VerificationMode;
 
+import java.io.IOException;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.*;
 
-public class FileSaverTest {
+public class FileStorageTest {
 
-    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private SimpleHTMLCrawler crawler;
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private SimpleWebCrawler crawler;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private Page referringPage;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private WebURL url;
 
-    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private FileSaver fileSaver;
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private FileStorage fileStorage;
 
 
     @Test
     public void storePage() {
-        setFileSaver(spy(new FileSaver()));
+        this.setFileStorage(spy(new FileStorage()));
 
         savedPage("bla","http://www.google.de/", "google_de", true );
         savedPage("blub","https://www.google.in.co/123/test", "google_in_co", true );
@@ -34,9 +38,13 @@ public class FileSaverTest {
     }
 
     private void savedPage(String html, String url, String fileName, Boolean valid ){
-        getFileSaver().storePage(constructTestPage(url, html));
-        VerificationMode mode = valid ? times(1): never();
-        verify(getFileSaver(), mode).saveStringToFile(eq(html), matches(String.format("crawledPages\\/%s-[0-9]*\\.html",fileName)));
+        try {
+            this.getFileStorage().store(constructTestPage(url, html));
+            VerificationMode mode = valid ? times(1): never();
+            verify(this.getFileStorage(), mode).saveStringToFile(eq(html), matches(String.format("crawledPages\\/%s-[0-9]*\\.html",fileName)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Page constructTestPage(String url, String html) {

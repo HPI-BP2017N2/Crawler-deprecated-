@@ -13,16 +13,16 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 
 
-public class SimpleHTMLCrawler extends WebCrawler {
+public class SimpleWebCrawler extends WebCrawler {
 
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private StorageProvider storageProvider;
-    @Getter(AccessLevel.PRIVATE) private final Logger logger = LoggerFactory.getLogger(SimpleHTMLCrawler.class);
+    @Getter(AccessLevel.PRIVATE) private final Logger logger = LoggerFactory.getLogger(SimpleWebCrawler.class);
 
-    public SimpleHTMLCrawler(StorageProvider aStorageProvider) {
+    public SimpleWebCrawler(StorageProvider aStorageProvider) {
         storageProvider = aStorageProvider;
     }
 
-    public SimpleHTMLCrawler(){}
+    public SimpleWebCrawler(){}
 
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
@@ -52,11 +52,17 @@ public class SimpleHTMLCrawler extends WebCrawler {
             getLogger().debug("Text length: {}", text.length());
             getLogger().debug("Html length: {}", html.length());
             getLogger().debug("Number of outgoing links: {}", links.size());
+
+            try {
+                storageProvider.store(page);
+            } catch (Exception e) {
+                logger.error("Storing failed", e);
+            }
         }
 
         getLogger().debug("=============");
        // if(isPageContentHTML(page)) {
-      //      storageProvider.storePage(page);
+      //      storageProvider.store(page);
       //  }
     }
 

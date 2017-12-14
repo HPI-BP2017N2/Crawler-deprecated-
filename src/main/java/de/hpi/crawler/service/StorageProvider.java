@@ -13,6 +13,6 @@ public interface StorageProvider {
      * @param page A page crawled by the crawler4j
      */
 
-    public void storePage(Page page);
+    void store(Page page) throws Exception;
 
 }
