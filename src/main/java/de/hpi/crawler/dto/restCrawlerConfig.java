@@ -4,6 +4,6 @@ import lombok.Getter;
 
 public class restCrawlerConfig {
 
-    @Getter private String domainUrl;
+    @Getter private String url;
 
 }

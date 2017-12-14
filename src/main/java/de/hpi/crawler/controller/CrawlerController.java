@@ -26,7 +26,7 @@ public class CrawlerController {
 
     @RequestMapping(value = "/crawler/start", method = RequestMethod.POST)
     public void startCrawling(@RequestBody restCrawlerConfig restCrawlerConfig) {
-        getCrawlerService().crawlPage(restCrawlerConfig.getDomainUrl());
+        getCrawlerService().crawlPage(restCrawlerConfig.getUrl());
     }
 
 
