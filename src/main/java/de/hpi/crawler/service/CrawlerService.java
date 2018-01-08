@@ -23,11 +23,11 @@ public class CrawlerService {
 
     //constants
 
-    @Getter(AccessLevel.PRIVATE) private final int REQUEST_TIMEOUT_IN_MS = 200, MAX_LINK_LEVEL_DEPTH = 20, MAX_OVERALL_LINK_COUNT = -1, NUMBER_OF_CRAWLERS = 1;
+    @Getter(AccessLevel.PRIVATE) private final int REQUEST_TIMEOUT_IN_MS = 21000, MAX_LINK_LEVEL_DEPTH = 20, MAX_OVERALL_LINK_COUNT = -1, NUMBER_OF_CRAWLERS = 1;
     @Getter(AccessLevel.PRIVATE) private final String TMP_FILES_DIR = "./tmp",
             USER_AGENT = "Mozilla/5.0 (compatible; HPI-BPN2-2017/2.1; https://hpi.de/naumann/teaching/bachelorprojekte/inventory-management.html)";
 
-    
+
 
     public void crawlDomain(String domainUrl) {
         try {
