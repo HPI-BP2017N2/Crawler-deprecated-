@@ -11,9 +11,14 @@ public class CrawlerServiceTest {
     public void crawlDomain() {
         CrawlerService crawlerService = spy(new CrawlerService());
 
+        obeysRobotsTxt(crawlerService);
 
         //doReturn("").when(crawlerService.)
 
         //TODO: Test with a new Storage TestStorage
+    }
+
+    private void obeysRobotsTxt(CrawlerService crawlerService) {
+
     }
 }
