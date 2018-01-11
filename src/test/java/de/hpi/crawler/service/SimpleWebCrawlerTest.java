@@ -44,7 +44,7 @@ class SimpleWebCrawlerTest {
         Page validPage = constructTestPage("http://www.google.de/", "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
-                "<title>Page Title</title>\n" +
+                "<title>CrawledPage Title</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "\n" +
