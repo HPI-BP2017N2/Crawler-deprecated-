@@ -11,8 +11,10 @@ import edu.uci.ics.crawler4j.crawler.Page;
 public interface StorageProvider {
     /**
      * @param page A page crawled by the crawler4j
+     *
      */
 
     void store(Page page) throws Exception;
+
 
 }

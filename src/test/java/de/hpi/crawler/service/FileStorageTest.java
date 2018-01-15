@@ -24,10 +24,11 @@ public class FileStorageTest {
 
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private FileStorage fileStorage;
 
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private long shopID = 1234;
 
     @Test
     public void storePage() {
-        this.setFileStorage(spy(new FileStorage()));
+        this.setFileStorage(spy(new FileStorage(shopID)));
 
         savedPage("bla","http://www.google.de/", "google_de", true );
         savedPage("blub","https://www.google.in.co/123/test", "google_in_co", true );
@@ -41,7 +42,7 @@ public class FileStorageTest {
         try {
             this.getFileStorage().store(constructTestPage(url, html));
             VerificationMode mode = valid ? times(1): never();
-            verify(this.getFileStorage(), mode).saveStringToFile(eq(html), matches(String.format("crawledPages\\/%s-[0-9]*\\.html",fileName)));
+            verify(this.getFileStorage(), mode).saveStringToFile(eq(html), matches(String.format("crawledPages\\/%s-[0-9]*\\.html",Long.toString(shopID) + "-" + fileName)));
         } catch (IOException e) {
             e.printStackTrace();
         }

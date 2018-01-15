@@ -4,6 +4,6 @@ import lombok.Getter;
 
 public class restCrawlerConfig {
 
-    @Getter private String url;
+    @Getter private Long shopID;
 
 }

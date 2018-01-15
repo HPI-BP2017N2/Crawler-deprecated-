@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class CrawledPage {
-    int shopID;
+    long shopID;
     String url;
     String htmlSource;
 }

@@ -22,13 +22,15 @@ public class StorageCrawlerFactory implements CrawlController.WebCrawlerFactory{
 
 
     public static class FileStorage extends StorageCrawlerFactory{
-        public FileStorage(String folderName){
-            super(new de.hpi.crawler.service.FileStorage(folderName));
+        public FileStorage(String folderName, long shopID){
+            super(new de.hpi.crawler.service.FileStorage(folderName, shopID));
         }
-        public FileStorage(){
-            super(new de.hpi.crawler.service.FileStorage("crawledPages/"));
+        public FileStorage(long shopID){
+            super(new de.hpi.crawler.service.FileStorage("crawledPages/", shopID));
         }
     }
+
+    //TODO: Implement QueueStorage
 
 
 }

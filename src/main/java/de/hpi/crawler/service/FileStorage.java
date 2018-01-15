@@ -17,17 +17,21 @@ public class FileStorage implements StorageProvider {
 
     //constants
     @Getter(AccessLevel.PRIVATE) private String folderName = "crawledPages/";
+    @Getter(AccessLevel.PRIVATE) private long shopID = 1234;
 
-    public FileStorage (String aFolderName) {
+    public FileStorage (String aFolderName, long aShopID) {
         folderName = aFolderName;
+        shopID = aShopID;
     }
 
-    public FileStorage(){}
+    public FileStorage(long aShopID){
+        shopID = aShopID;
+    }
 
     @Override
     public void store(Page page) throws IOException {
         String contentPage = ((HtmlParseData) page.getParseData()).getHtml();
-        String fileName = getDomainFileFriendly(page.getWebURL().getURL()) + "-" + Long.toString(System.currentTimeMillis()) + ".html";
+        String fileName = Long.toString(shopID) + "-" + getDomainFileFriendly(page.getWebURL().getURL()) + "-" + Long.toString(System.currentTimeMillis()) + ".html";
         String pathName =  folderName + fileName;
         saveStringToFile(contentPage, pathName);
     }
