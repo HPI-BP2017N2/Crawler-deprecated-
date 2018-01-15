@@ -31,10 +31,10 @@ public class CrawlerService {
 
     public void crawlDomain(long shopID) {
         try {
-            String shopRootURL = retrieveShopRootURLFromBridge(shopID);
+            String shopRootURL = getShopRootURL(shopID);
             CrawlController controller = createDefaultCrawlController(shopRootURL);
             controller.addSeed(shopRootURL);
-            StorageCrawlerFactory factory = new StorageCrawlerFactory.FileStorage(shopID);
+            StorageCrawlerFactory factory = new StorageCrawlerFactory.QueueStorage(shopID);
             controller.startNonBlocking(factory,1);
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,8 +85,8 @@ public class CrawlerService {
         return status != HttpStatus.SC_NOT_FOUND;
     }
 
-    private String retrieveShopRootURLFromBridge(long shopID){
-        //TODO: Connection to BP Bridge
-        return "1234";
+    private String getShopRootURL(long shopID){
+        ConnectionService connection = new ConnectionService();
+        return connection.getURLfromShopIDfromBridge(shopID);
     }
 }

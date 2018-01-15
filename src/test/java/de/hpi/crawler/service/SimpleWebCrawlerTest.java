@@ -29,7 +29,7 @@ class SimpleWebCrawlerTest {
 
     @BeforeEach
     void setup(){
-        setFileSaver(spy(new FileStorage()));
+        setFileSaver(spy(new FileStorage(1234)));
 
         setCrawler(spy(new SimpleWebCrawler(getFileSaver())));
         setReferringPage(mock(Page.class));

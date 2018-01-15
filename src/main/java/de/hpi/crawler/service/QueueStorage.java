@@ -36,10 +36,9 @@ public class QueueStorage implements StorageProvider {
     }
 
     private void sendToQueue(String json){
-        //TODO: Implement
+        ConnectionService connection = new ConnectionService();
+        connection.sendStringToQueue(json);
     }
 
-    private void initializeConnectionToQueue(){
-        //TODO: Implement
-    }
+
 }

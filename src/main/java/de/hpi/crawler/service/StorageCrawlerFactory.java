@@ -30,7 +30,11 @@ public class StorageCrawlerFactory implements CrawlController.WebCrawlerFactory{
         }
     }
 
-    //TODO: Implement QueueStorage
+    public static class QueueStorage extends StorageCrawlerFactory{
+        public QueueStorage(long shopID){
+            super(new de.hpi.crawler.service.QueueStorage(shopID));
+        }
+    }
 
 
 }
