@@ -1,7 +1,6 @@
 package de.hpi.crawler.service;
 
 import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,7 +39,8 @@ public class FileStorageTest {
 
     private void savedPage(String html, String url, String fileName, Boolean valid ){
         try {
-            this.getFileStorage().store(constructTestPage(url, html));
+            TestTools testTools = new TestTools();
+            this.getFileStorage().store(testTools.constructTestPage(url, html));
             VerificationMode mode = valid ? times(1): never();
             verify(this.getFileStorage(), mode).saveStringToFile(eq(html), matches(String.format("crawledPages\\/%s-[0-9]*\\.html",Long.toString(shopID) + "-" + fileName)));
         } catch (IOException e) {
@@ -48,13 +48,5 @@ public class FileStorageTest {
         }
     }
 
-    private Page constructTestPage(String url, String html) {
-        WebURL urlOfPageToStore = new WebURL();
-        urlOfPageToStore.setURL(url);
-        Page pageToStore = new Page(urlOfPageToStore);
-        HtmlParseData testParseData = new HtmlParseData();
-        testParseData.setHtml(html);
-        pageToStore.setParseData(testParseData);
-        return pageToStore;
-    }
+
 }

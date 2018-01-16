@@ -1,6 +1,7 @@
 package de.hpi.crawler.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.annotations.VisibleForTesting;
 import de.hpi.crawler.model.JsonConverter;
 import de.hpi.crawler.dto.CrawledPage;
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -35,7 +36,7 @@ public class QueueStorage implements StorageProvider {
         return JsonConverter.getJsonStringForJavaObject(page);
     }
 
-    private void sendToQueue(String json){
+    @VisibleForTesting void sendToQueue(String json){
         ConnectionService connection = new ConnectionService();
         connection.sendStringToQueue(json);
     }

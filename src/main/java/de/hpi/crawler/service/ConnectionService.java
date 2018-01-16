@@ -21,7 +21,6 @@ public class ConnectionService {
     private RestTemplate restTemplate;
 
 
-
     public ConnectionService(){
         setRestTemplate(new RestTemplate());
     }
