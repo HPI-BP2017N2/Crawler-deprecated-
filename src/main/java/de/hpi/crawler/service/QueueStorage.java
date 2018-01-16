@@ -2,7 +2,7 @@ package de.hpi.crawler.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.hpi.crawler.model.JsonConverter;
-import de.hpi.crawler.service.model.data.CrawledPage;
+import de.hpi.crawler.dto.CrawledPage;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import lombok.AccessLevel;
