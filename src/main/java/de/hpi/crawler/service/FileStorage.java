@@ -17,7 +17,7 @@ public class FileStorage implements StorageProvider {
 
     //constants
     @Getter(AccessLevel.PRIVATE) private String folderName = "crawledPages/";
-    @Getter(AccessLevel.PRIVATE) private long shopID = 1234;
+    @Getter(AccessLevel.PRIVATE) private long shopID;
 
     public FileStorage (String aFolderName, long aShopID) {
         folderName = aFolderName;
@@ -29,9 +29,9 @@ public class FileStorage implements StorageProvider {
     }
 
     @Override
-    public void store(Page page) throws IOException {
+    public void store(Page page, long timestamp) throws IOException {
         String contentPage = ((HtmlParseData) page.getParseData()).getHtml();
-        String fileName = Long.toString(shopID) + "-" + getDomainFileFriendly(page.getWebURL().getURL()) + "-" + Long.toString(System.currentTimeMillis()) + ".html";
+        String fileName = Long.toString(shopID) + "-" + getDomainFileFriendly(page.getWebURL().getURL()) + "-" + Long.toString(timestamp) + ".html";
         String pathName =  folderName + fileName;
         saveStringToFile(contentPage, pathName);
     }

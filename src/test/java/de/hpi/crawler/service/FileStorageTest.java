@@ -40,7 +40,7 @@ public class FileStorageTest {
     private void savedPage(String html, String url, String fileName, Boolean valid ){
         try {
             TestTools testTools = new TestTools();
-            this.getFileStorage().store(testTools.constructTestPage(url, html));
+            this.getFileStorage().store(testTools.constructTestPage(url, html), System.currentTimeMillis());
             VerificationMode mode = valid ? times(1): never();
             verify(this.getFileStorage(), mode).saveStringToFile(eq(html), matches(String.format("crawledPages\\/%s-[0-9]*\\.html",Long.toString(shopID) + "-" + fileName)));
         } catch (IOException e) {

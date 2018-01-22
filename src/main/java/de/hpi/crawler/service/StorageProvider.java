@@ -11,10 +11,10 @@ import edu.uci.ics.crawler4j.crawler.Page;
 public interface StorageProvider {
     /**
      * @param page A page crawled by the crawler4j
+     * @param timestamp The timestamp when the page was crawled
      *
      */
 
-    void store(Page page) throws Exception;
-
+    void store(Page page, long timestamp) throws Exception;
 
 }

@@ -9,8 +9,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.mockito.verification.VerificationMode;
 
-import java.io.IOException;
-
 import static org.mockito.Mockito.*;
 
 public class QueueStorageTest {
@@ -22,10 +20,12 @@ public class QueueStorageTest {
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private QueueStorage queueStorage;
 
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private long shopID = 1234;
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private long timestamp;
 
     @Test
     public void store() {
         this.setQueueStorage(spy(new QueueStorage(shopID)));
+        setTimestamp(System.currentTimeMillis());
 
         savedPage(shopID,"bla","http://www.google.de/");
         savedPage(shopID, "blub","https://www.google.in.co/123/test");
@@ -39,23 +39,22 @@ public class QueueStorageTest {
         try {
             TestTools testTools = new TestTools();
             Page testPage = testTools.constructTestPage(url, html);
-            getQueueStorage().store(testPage);
+            getQueueStorage().store(testPage,getTimestamp() );
             VerificationMode mode = times(1);
-            verify(getQueueStorage(), mode).sendToQueue(constructTestJSON(shopID, html, url));
-        } catch (IOException e) {
-            e.printStackTrace();
+            verify(getQueueStorage(), mode).sendToQueue(constructTestJSON(shopID, getTimestamp(), url, html));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private String constructTestJSON (long shopID, String html, String url){
+    private String constructTestJSON(long shopID, long timestamp, String url, String html){
         String prototype = "{\n" +
                 "  \"shopID\" : %1$s,\n" +
-                "  \"url\" : \"%2$s\",\n" +
-                "  \"htmlSource\" : \"%3$s\"\n" +
+                "  \"timestamp\" : %2$s,\n" +
+                "  \"url\" : \"%3$s\",\n" +
+                "  \"htmlSource\" : \"%4$s\"\n" +
                 "}";
-        prototype = String.format(prototype, shopID,url,html);
+        prototype = String.format(prototype, shopID, timestamp,url,html);
         return prototype;
     }
 }

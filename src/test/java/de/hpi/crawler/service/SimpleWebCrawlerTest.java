@@ -23,14 +23,14 @@ class SimpleWebCrawlerTest {
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private WebURL url;
 
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) StorageProvider fileSaver;
-
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private long timestamp;
 
 
 
     @BeforeEach
     void setup(){
         setFileSaver(spy(new FileStorage(1234)));
-
+        setTimestamp(System.currentTimeMillis());
         setCrawler(spy(new SimpleWebCrawler(getFileSaver())));
         setReferringPage(mock(Page.class));
         setUrl(mock(WebURL.class));
@@ -56,7 +56,7 @@ class SimpleWebCrawlerTest {
         getCrawler().visit(validPage);
 
         try {
-            verify(getFileSaver(), times(1)).store(validPage);
+            verify(getFileSaver(), times(1)).store(validPage, anyLong());
         } catch (Exception e) {
             e.printStackTrace();
         }

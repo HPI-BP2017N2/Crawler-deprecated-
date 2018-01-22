@@ -54,7 +54,7 @@ public class SimpleWebCrawler extends WebCrawler {
             //getLogger().debug("Number of outgoing links: {}", links.size());
 
             try {
-                storageProvider.store(page);
+                storageProvider.store(page, System.currentTimeMillis());
             } catch (Exception e) {
                 logger.error("Storing failed", e);
             }
