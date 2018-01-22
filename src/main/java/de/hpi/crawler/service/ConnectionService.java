@@ -31,7 +31,6 @@ public class ConnectionService {
         return shopURL;
     }
 
-
     private URI buildURIforQuery(String rootUrl, String route, String parameterName, Object... parameter){
         return UriComponentsBuilder.fromUriString(getBP_BRIDGE_ROOT())
                 .path(getSHOPID_ROUTE())

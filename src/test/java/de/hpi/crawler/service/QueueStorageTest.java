@@ -27,26 +27,21 @@ public class QueueStorageTest {
     public void store() {
         this.setQueueStorage(spy(new QueueStorage(shopID)));
 
+        savedPage(shopID,"bla","http://www.google.de/");
+        savedPage(shopID, "blub","https://www.google.in.co/123/test");
+        savedPage(shopID,RandomStringUtils.randomAlphabetic(10),"https://www.google.in.co/123/test");
+        savedPage(shopID,RandomStringUtils.randomAlphabetic(10),"https://google.in/123/test");
+
+        savedPage(shopID, RandomStringUtils.randomAlphabetic(10),"https://www.:google.in.co/123/test");
     }
 
-    @Test
-    public void storePage() {
-
-
-        savedPage(shopID,"bla","http://www.google.de/", true );
-        savedPage(shopID, "blub","https://www.google.in.co/123/test", true );
-        savedPage(shopID,RandomStringUtils.randomAlphabetic(10),"https://www.google.in.co/123/test", true );
-        savedPage(shopID,RandomStringUtils.randomAlphabetic(10),"https://google.in/123/test", true );
-
-        savedPage(shopID, RandomStringUtils.randomAlphabetic(10),"https://www.:google.in.co/123/test", true );
-    }
-
-    private void savedPage(long shopID, String html, String url, Boolean valid ){
+    private void savedPage(long shopID, String html, String url){
         try {
             TestTools testTools = new TestTools();
-            this.getQueueStorage().store(testTools.constructTestPage(url, html));
-            VerificationMode mode = valid ? times(1): never(); //TODO: see if this is still valid
-            verify(this.getQueueStorage(), mode).sendToQueue(constructTestJSON(shopID, html, url));
+            Page testPage = testTools.constructTestPage(url, html);
+            getQueueStorage().store(testPage);
+            VerificationMode mode = times(1);
+            verify(getQueueStorage(), mode).sendToQueue(constructTestJSON(shopID, html, url));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -54,15 +49,13 @@ public class QueueStorageTest {
         }
     }
 
-    private String constructTestJSON (long shopID, String url, String html){
+    private String constructTestJSON (long shopID, String html, String url){
         String prototype = "{\n" +
-                "  \"shopID\": \"{1}\",\n" +
-                "  \"url\": \"{2}\",\n" +
-                "  \"htmlSource\": \"{3}\"\n" +
+                "  \"shopID\" : %1$s,\n" +
+                "  \"url\" : \"%2$s\",\n" +
+                "  \"htmlSource\" : \"%3$s\"\n" +
                 "}";
-        String.format(prototype, shopID,url,html);
+        prototype = String.format(prototype, shopID,url,html);
         return prototype;
     }
-
-    //TODO: Fix errors ocurring at Test
 }
