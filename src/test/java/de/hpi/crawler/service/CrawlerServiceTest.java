@@ -12,7 +12,14 @@ public class CrawlerServiceTest {
 
     @Test
     public void crawlDomain() {
+        //ConnectionService connectionService = spy(new ConnectionService());
+
+        //doReturn("http://books.toscrape.com/").when(connectionService).getURLfromShopIDfromBridge(1234);
+
         CrawlerService crawlerService = spy(new CrawlerService());
+
+        crawlerService.crawlDomain(1);
+
 
         //obeysRobotsTxt(crawlerService);
 

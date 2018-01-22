@@ -27,8 +27,7 @@ public class ConnectionService {
 
     public String getURLfromShopIDfromBridge(long shopID) {
         URI connectionURItoBridge = buildURIforQuery(getBP_BRIDGE_ROOT(), getSHOPID_ROUTE(), "shopID", shopID);
-        String shopURL = getRestTemplate().getForObject(connectionURItoBridge, shopIDResponse.class).getShopUrl();
-        return shopURL;
+        return getRestTemplate().getForObject(connectionURItoBridge, shopIDResponse.class).getShopUrl();
     }
 
     private URI buildURIforQuery(String rootUrl, String route, String parameterName, Object... parameter){
@@ -40,7 +39,8 @@ public class ConnectionService {
                 .toUri();
     }
 
-    public void sendStringToQueue(String string){
+
+    public void sendStringToQueue(String string, String queueName){
         initializeConnectionToQueue();
         //TODO: Implement
     }

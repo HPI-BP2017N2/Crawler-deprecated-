@@ -11,7 +11,7 @@ import org.mockito.verification.VerificationMode;
 
 import static org.mockito.Mockito.*;
 
-public class QueueStorageTest {
+public class QueueStorageFactoryTest {
 
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private SimpleWebCrawler crawler;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private Page referringPage;
@@ -41,7 +41,7 @@ public class QueueStorageTest {
             Page testPage = testTools.constructTestPage(url, html);
             getQueueStorage().store(testPage,getTimestamp() );
             VerificationMode mode = times(1);
-            verify(getQueueStorage(), mode).sendToQueue(constructTestJSON(shopID, getTimestamp(), url, html));
+            verify(getQueueStorage(), mode).sendToQueue(constructTestJSON(shopID, getTimestamp(), url, html), "htmlPagesParser" );
         } catch (Exception e) {
             e.printStackTrace();
         }

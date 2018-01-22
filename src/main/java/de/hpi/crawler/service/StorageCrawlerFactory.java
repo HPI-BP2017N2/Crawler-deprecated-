@@ -9,7 +9,7 @@ import lombok.Setter;
 
 public class StorageCrawlerFactory implements CrawlController.WebCrawlerFactory{
 
-    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private StorageProvider storageProvider;
+    @Getter @Setter(AccessLevel.PRIVATE) private StorageProvider storageProvider;
 
     public StorageCrawlerFactory(StorageProvider aStorageProvider){
         storageProvider = aStorageProvider;
@@ -21,17 +21,17 @@ public class StorageCrawlerFactory implements CrawlController.WebCrawlerFactory{
     }
 
 
-    public static class FileStorage extends StorageCrawlerFactory{
-        public FileStorage(String folderName, long shopID){
+    public static class FileStorageFactory extends StorageCrawlerFactory{
+        public FileStorageFactory(String folderName, long shopID){
             super(new de.hpi.crawler.service.FileStorage(folderName, shopID));
         }
-        public FileStorage(long shopID){
+        public FileStorageFactory(long shopID){
             super(new de.hpi.crawler.service.FileStorage("crawledPages/", shopID));
         }
     }
 
-    public static class QueueStorage extends StorageCrawlerFactory{
-        public QueueStorage(long shopID){
+     public static class QueueStorageFactory extends StorageCrawlerFactory{
+        public QueueStorageFactory(long shopID){
             super(new de.hpi.crawler.service.QueueStorage(shopID));
         }
     }

@@ -1,6 +1,7 @@
 package de.hpi.crawler.service;
 
 
+import de.hpi.crawler.dto.FinishedShop;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.exceptions.PageBiggerThanMaxSizeException;
@@ -11,6 +12,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +25,43 @@ public class CrawlerService {
 
     //constants
 
-    @Getter(AccessLevel.PRIVATE) private final int REQUEST_TIMEOUT_IN_MS = 21000, MAX_LINK_LEVEL_DEPTH = 20, MAX_OVERALL_LINK_COUNT = -1, NUMBER_OF_CRAWLERS = 1;
+    @Getter(AccessLevel.PRIVATE) private final int REQUEST_TIMEOUT_IN_MS = 100, MAX_LINK_LEVEL_DEPTH = 20, MAX_OVERALL_LINK_COUNT = 3, NUMBER_OF_CRAWLERS = 1;
     @Getter(AccessLevel.PRIVATE) private final String TMP_FILES_DIR = "./tmp",
             USER_AGENT = "Mozilla/5.0 (compatible; HPI-BPN2-2017/2.1; https://hpi.de/naumann/teaching/bachelorprojekte/inventory-management.html)";
 
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private ConnectionService connectionService;
 
+
+    public CrawlerService(ConnectionService aConnectionService) {
+        connectionService = aConnectionService;
+    }
+
+    public CrawlerService(){
+        connectionService = new ConnectionService();
+    }
 
     public void crawlDomain(long shopID) {
         try {
             String shopRootURL = getShopRootURL(shopID);
             CrawlController controller = createDefaultCrawlController(shopRootURL);
             controller.addSeed(shopRootURL);
-            StorageCrawlerFactory factory = new StorageCrawlerFactory.QueueStorage(shopID);
-            controller.startNonBlocking(factory,1);
+            StorageCrawlerFactory factory = new StorageCrawlerFactory.QueueStorageFactory(shopID);
+
+            new Thread(() -> {
+                controller.start(factory,1);
+                sendFinishedShopIDtoQueue(shopID, (QueueStorage)factory.getStorageProvider());
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendFinishedShopIDtoQueue(long shopID, QueueStorage queueStorage){
+        FinishedShop finishedShop = new FinishedShop();
+        finishedShop.setFinishedShopID(shopID);
+
+        try {
+            queueStorage.store(finishedShop);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,7 +112,6 @@ public class CrawlerService {
     }
 
     private String getShopRootURL(long shopID){
-        ConnectionService connection = new ConnectionService();
-        return connection.getURLfromShopIDfromBridge(shopID);
+        return getConnectionService().getURLfromShopIDfromBridge(shopID);
     }
 }
