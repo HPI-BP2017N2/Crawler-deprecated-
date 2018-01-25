@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
 
 
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -82,6 +81,19 @@
             <version>4.3</version>
         </dependency>
 
+        <!-- RESTClient -->
+        <dependency>
+            <groupId>de.hpi</groupId>
+            <artifactId>RESTClient</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <!-- RabbitMQProducer -->
+        <dependency>
+            <groupId>de.hpi</groupId>
+            <artifactId>rabbitmqProducer</artifactId>
+            <version>1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -116,6 +128,13 @@
                 </configuration>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>3.0.0</version>
+            </extension>
+        </extensions>
     </build>
 
 

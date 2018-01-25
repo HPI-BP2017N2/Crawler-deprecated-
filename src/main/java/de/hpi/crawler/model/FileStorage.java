@@ -1,4 +1,4 @@
-package de.hpi.crawler.service;
+package de.hpi.crawler.model;
 
 import com.google.common.annotations.VisibleForTesting;
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -19,7 +19,7 @@ public class FileStorage implements StorageProvider {
     @Getter(AccessLevel.PRIVATE) private String folderName = "crawledPages/";
     @Getter(AccessLevel.PRIVATE) private long shopID;
 
-    public FileStorage (String aFolderName, long aShopID) {
+    public FileStorage (String aFolderName , long aShopID) {
         folderName = aFolderName;
         shopID = aShopID;
     }
@@ -31,9 +31,23 @@ public class FileStorage implements StorageProvider {
     @Override
     public void store(Page page, long timestamp) throws IOException {
         String contentPage = ((HtmlParseData) page.getParseData()).getHtml();
-        String fileName = Long.toString(shopID) + "-" + getDomainFileFriendly(page.getWebURL().getURL()) + "-" + Long.toString(timestamp) + ".html";
+        String fileName = getFileName(page.getWebURL().getURL(), timestamp);
         String pathName =  folderName + fileName;
         saveStringToFile(contentPage, pathName);
+    }
+
+
+    @Override
+    public void finishedCrawling() {
+        try {
+            saveStringToFile("",getFolderName()+"FINISHED_"+getFileName("", System.currentTimeMillis()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getFileName(String pageUrl, long timestamp) {
+        return Long.toString(shopID) + "-" + getDomainFileFriendly(pageUrl) + "-" + Long.toString(timestamp) + ".html";
     }
 
     private String getDomainFileFriendly(String url){
@@ -48,7 +62,8 @@ public class FileStorage implements StorageProvider {
             return "";
     }
 
-    @VisibleForTesting void saveStringToFile(String stringToWrite, String pathName) throws IOException {
+    @VisibleForTesting
+    public void saveStringToFile(String stringToWrite, String pathName) throws IOException {
         File file = new File(pathName);
         File folder = file.getParentFile();
 

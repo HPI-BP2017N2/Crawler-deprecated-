@@ -1,6 +1,9 @@
 package de.hpi.crawler.service;
 
 
+import de.hpi.crawler.model.FileStorage;
+import de.hpi.crawler.model.SimpleWebCrawler;
+import de.hpi.crawler.model.StorageProvider;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -22,7 +25,8 @@ class SimpleWebCrawlerTest {
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private Page referringPage;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private WebURL url;
 
-    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) StorageProvider fileSaver;
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE)
+    StorageProvider fileSaver;
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private long timestamp;
 
 

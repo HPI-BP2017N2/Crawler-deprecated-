@@ -1,4 +1,4 @@
-package de.hpi.crawler.service;
+package de.hpi.crawler.model;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;

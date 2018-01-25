@@ -1,5 +1,7 @@
 package de.hpi.crawler.service;
 
+import de.hpi.crawler.model.FileStorage;
+import de.hpi.crawler.model.SimpleWebCrawler;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lombok.AccessLevel;
