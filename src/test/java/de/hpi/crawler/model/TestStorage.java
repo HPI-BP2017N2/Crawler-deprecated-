@@ -7,7 +7,7 @@ import lombok.Setter;
 
 public class TestStorage implements StorageProvider {
 
-    @Getter(AccessLevel.PUBLIC) @Setter(AccessLevel.PRIVATE) volatile boolean finished = false;
+    @Getter(AccessLevel.PUBLIC) @Setter(AccessLevel.PRIVATE) volatile int finished = 0;
 
     @Getter(AccessLevel.PUBLIC) @Setter(AccessLevel.PRIVATE) int numberOfPages = 0;
 
@@ -18,6 +18,6 @@ public class TestStorage implements StorageProvider {
 
     @Override
     public void finishedCrawling() {
-        setFinished(true);
+        setFinished(getFinished()+1);
     }
 }
