@@ -1,0 +1,5 @@
+bpbridge:
+  root: x
+  getRandomOfferRoute: '/getRandomOffers'
+  shopIDToURLRoute: '/shopIDToUrl'
+  matchAttributeRoute: '/matchAttribute'
