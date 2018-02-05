@@ -17,6 +17,8 @@ import org.apache.http.HttpStatus;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Crawler {
@@ -52,14 +54,14 @@ public class Crawler {
     }
 
     private CrawlController createDefaultCrawlController (String startUrl) throws Exception {
-        CrawlConfig defaultCrawlConfig = createDefaultCrawlConfig();
+        CrawlConfig defaultCrawlConfig = createDefaultCrawlConfig(startUrl);
         PageFetcher defaultPageFetcher = new PageFetcher(defaultCrawlConfig);
         RobotstxtServer defaultRobotsTxtServer = createDefaultRobotsTxtServer(defaultPageFetcher, startUrl);
         return new CrawlController(defaultCrawlConfig,defaultPageFetcher, defaultRobotsTxtServer);
     }
-    private CrawlConfig createDefaultCrawlConfig(){
+    private CrawlConfig createDefaultCrawlConfig(String startUrl){
         CrawlConfig config = new CrawlConfig();
-        config.setCrawlStorageFolder(getTMP_FILES_DIR());
+        config.setCrawlStorageFolder(getTMP_FILES_DIR() + "/" + getDomainFileFriendly(startUrl));
         config.setPolitenessDelay(getREQUEST_TIMEOUT_IN_MS());
         config.setMaxDepthOfCrawling(getMAX_LINK_LEVEL_DEPTH());
         config.setMaxPagesToFetch(getMAX_OVERALL_LINK_COUNT());
@@ -69,6 +71,19 @@ public class Crawler {
         config.setUserAgentString(getUSER_AGENT());
         return config;
     }
+
+    private String getDomainFileFriendly(String url){
+
+        Pattern pattern = Pattern.compile("^(?:https?://)?(?:[^@/\\n]+@)?(?:www\\.)?([^:/\\n]+)");
+        Matcher matcher = pattern.matcher(url);
+        if (matcher.find())
+        {
+            return matcher.group(1).replaceAll("\\.","_");
+        }
+        else
+            return "";
+    }
+
     private RobotstxtServer createDefaultRobotsTxtServer(PageFetcher fetcher, String rootUrl){
         RobotstxtConfig robotsTxtConfig = new RobotstxtConfig();
         try {

@@ -13,6 +13,7 @@ public class TestStorage implements StorageProvider {
 
     @Override
     public void store(Page page, long timestamp) throws Exception {
+
         setNumberOfPages(getNumberOfPages()+1);
     }
 

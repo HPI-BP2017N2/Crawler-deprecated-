@@ -9,27 +9,15 @@ public class CrawlerTest {
     @Test
     public void startCrawling() {
 
-        Crawler crawler = new Crawler(100);
-
-
-        TestStorage booksToScrapeStorage = new TestStorage();
-        TestStorage quotesToScrapeStorage = new TestStorage();
-        TestStorage mixedStorage = new TestStorage();
-        crawlBooksToScrape();
-        crawlQuotesToScrape();
-
-
-
-        int booksToScrapePages = booksToScrapeStorage.getNumberOfPages();
-        int quotesToScrapePages = quotesToScrapeStorage.getNumberOfPages();
-
-        Assert.assertEquals(1350, mixedStorage.getNumberOfPages());
-
-
         //TODO: Test with a new Storage TestStorage
     }
 
-    private void crawlBothSameStorage(Crawler crawler, TestStorage booksToScrapeStorage, TestStorage quotesToScrapeStorage, TestStorage mixedStorage) {
+    @Test
+    public void crawlBothSameStorage() {
+        Crawler crawler = new Crawler(50);
+        TestStorage mixedStorage = new TestStorage();
+
+
         crawler.startCrawling("http://books.toscrape.com/", mixedStorage);
         crawler.startCrawling("http://quotes.toscrape.com/", mixedStorage);
 
@@ -40,31 +28,39 @@ public class CrawlerTest {
                 e.printStackTrace();
             }
         }
+
+        Assert.assertEquals(1350, mixedStorage.getNumberOfPages());
+        //TODO: Look why the number keeps being 1064
     }
 
-    private void crawlBothDifferentStorages() {
-        Crawler crawler = new Crawler(100);
+    @Test
+    public void crawlBothDifferentStorages() {
+        Crawler crawler = new Crawler(50);
         TestStorage mixedStorage = new TestStorage();
 
         TestStorage booksToScrapeStorage = new TestStorage();
         TestStorage quotesToScrapeStorage = new TestStorage();
 
-        crawler.startCrawling("http://books.toscrape.com/", mixedStorage);
-        crawler.startCrawling("http://quotes.toscrape.com/", mixedStorage);
+        crawler.startCrawling("http://books.toscrape.com/", booksToScrapeStorage);
+        crawler.startCrawling("http://quotes.toscrape.com/", quotesToScrapeStorage);
 
 
-        while (mixedStorage.getFinished()<2) {
+        while (booksToScrapeStorage.getFinished()<1 || quotesToScrapeStorage.getFinished()<1) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        Assert.assertEquals(214, quotesToScrapeStorage.getNumberOfPages());
+        Assert.assertEquals(1136, booksToScrapeStorage.getNumberOfPages());
+
     }
 
     @Test
     public void crawlBooksToScrape() {
-        Crawler crawler = new Crawler(100);
+        Crawler crawler = new Crawler(50);
 
 
         TestStorage booksToScrapeStorage = new TestStorage();
@@ -82,7 +78,7 @@ public class CrawlerTest {
     @Test
     public void crawlQuotesToScrape() {
 
-        Crawler crawler = new Crawler(100);
+        Crawler crawler = new Crawler(50);
 
         TestStorage quotesToScrapeStorage = new TestStorage();
         crawler.startCrawling("http://quotes.toscrape.com/", quotesToScrapeStorage);
@@ -93,7 +89,7 @@ public class CrawlerTest {
                 e.printStackTrace();
             }
         }
-        Assert.assertEquals(248, quotesToScrapeStorage.getNumberOfPages());
+        Assert.assertEquals(214, quotesToScrapeStorage.getNumberOfPages());
     }
 
 
