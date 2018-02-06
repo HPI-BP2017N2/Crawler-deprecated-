@@ -6,11 +6,6 @@ import org.junit.Test;
 
 public class CrawlerTest {
 
-    @Test
-    public void startCrawling() {
-
-        //TODO: Test with a new Storage TestStorage
-    }
 
     @Test
     public void crawlBothSameStorage() {
