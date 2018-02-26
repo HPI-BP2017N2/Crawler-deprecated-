@@ -41,6 +41,8 @@ public class CrawlerService {
 
     public void crawlDomain(long shopID) {
         String shopRootURL = bpBridgeClient.shopIDToUrl(shopID).getShopUrl();
+        //String shopRootURL = "https://www.saturn.de";
+        //StorageProvider storageProvider = new FileStorage(shopID);
         StorageProvider storageProvider = new QueueStorage(shopID, getMatcherQueue(), getPagesQueue());
         getShopCrawler().startCrawling(shopRootURL, storageProvider);
     }

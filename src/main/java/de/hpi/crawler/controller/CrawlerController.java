@@ -1,7 +1,7 @@
 package de.hpi.crawler.controller;
 
-import de.hpi.crawler.dto.restCrawlerConfig;
 import de.hpi.crawler.service.CrawlerService;
+import de.hpi.restclient.dto.restCrawlerConfig;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

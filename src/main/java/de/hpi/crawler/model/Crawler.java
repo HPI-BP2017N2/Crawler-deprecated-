@@ -25,10 +25,11 @@ public class Crawler {
 
     //constants
 
-    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private int REQUEST_TIMEOUT_IN_MS = 200;
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE) private int REQUEST_TIMEOUT_IN_MS = 15000;
     @Getter(AccessLevel.PRIVATE)  private final int MAX_LINK_LEVEL_DEPTH = 20, MAX_OVERALL_LINK_COUNT = -1, NUMBER_OF_CRAWLERS = 1;
     @Getter(AccessLevel.PRIVATE) private final String TMP_FILES_DIR = "./tmp",
-            USER_AGENT = "Mozilla/5.0 (compatible; HPI-BPN2-2017/2.1; https://hpi.de/naumann/teaching/bachelorprojekte/inventory-management.html)";
+            USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36";
+            //USER_AGENT = "Mozilla/5.0 (compatible; HPI-BPN2-2017/2.1; https://hpi.de/naumann/teaching/bachelorprojekte/inventory-management.html)";
 
 
 

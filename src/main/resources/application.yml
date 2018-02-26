@@ -3,3 +3,13 @@ bpbridge:
   getRandomOfferRoute: '/getRandomOffers'
   shopIDToURLRoute: '/shopIDToUrl'
   matchAttributeRoute: '/matchAttribute'
+  cleanURLRoute: '/cleanURL'
+  matchAttributeWithMapRoute: '/'
+
+shoprulesgenerator:
+  root: '/'
+  get-rules-route: '/'
+urlcleaner:
+  root: '/'
+  clean-u-r-l-route: '/'
+
