@@ -43,7 +43,7 @@ public class CrawlerService {
         String shopRootURL = bpBridgeClient.shopIDToUrl(shopID).getShopUrl();
         //String shopRootURL = "https://www.saturn.de";
         //StorageProvider storageProvider = new FileStorage(shopID);
-        StorageProvider storageProvider = new QueueStorage(shopID, getMatcherQueue(), getPagesQueue());
+        StorageProvider storageProvider = new QueueStorage( shopID, getMatcherQueue(), getPagesQueue());
         getShopCrawler().startCrawling(shopRootURL, storageProvider);
     }
 }
